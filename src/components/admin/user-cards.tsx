@@ -7,7 +7,7 @@ interface UserCardProps {
   name: string;
   email: string;
   phone: string;
-  role: "ADMIN" | "USER" | "LUTHER";
+  role: "ADMIN" | "USER" | "LUTHIER";
   isActive: boolean;
   onClick?: () => void;
 }
@@ -105,7 +105,7 @@ export const mockUsers = [
     name: "Pedro Oliveira",
     email: "pedro@email.com",
     phone: "(11) 77777-7777",
-    role: "LUTHER" as const,
+    role: "LUTHIER" as const,
     isActive: false,
     firstName: "Pedro",
     lastName: "Oliveira",

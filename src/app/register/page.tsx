@@ -17,7 +17,7 @@ type AdditionalInfo = {
   birthday: string;
   password: string;
   confirmPassword: string;
-  userType: "CLIENT" | "LUTHER";
+  userType: "CLIENT" | "LUTHIER";
 };
 
 type RegistrationStep = "step1" | "step2" | "success";

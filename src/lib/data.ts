@@ -5,7 +5,7 @@ export interface User {
   lastName: string;
   phone: string;
   birthday: string;
-  role: "ADMIN" | "USER" | "LUTHER";
+  role: "ADMIN" | "USER" | "LUTHIER";
   isActive: boolean;
   createdAt: string;
 }
@@ -60,7 +60,33 @@ export const SERVICES: Service[] = [
     price: 150.00,
     imageUrl: "/images/service-bridge.jpg",
     videoUrl: "/images/service-bridge.jpg"
-  }
+  },
+    {
+    id: "4",
+    title: "Regulagem de Trastes",
+    description: "Nivelamento e polimento dos trastes para melhorar a tocabilidade do instrumento. Este processo é essencial para eliminar ruídos e melhorar a ação das cordas.",
+    benefits: [
+      "Melhora a tocabilidade",
+      "Som mais limpo",
+      "Maior durabilidade"
+    ],
+    price: 180.00,
+    imageUrl: "/images/service-frets.jpg",
+    videoUrl: "/images/service-frets.jpg"
+  },
+    {
+    id: "5",
+    title: "Regulagem de Trastes",
+    description: "Nivelamento e polimento dos trastes para melhorar a tocabilidade do instrumento. Este processo é essencial para eliminar ruídos e melhorar a ação das cordas.",
+    benefits: [
+      "Melhora a tocabilidade",
+      "Som mais limpo",
+      "Maior durabilidade"
+    ],
+    price: 180.00,
+    imageUrl: "/images/service-frets.jpg",
+    videoUrl: "/images/service-frets.jpg"
+  },
 ];
 
 // Mock data for users
@@ -83,7 +109,7 @@ export const USERS: User[] = [
     lastName: "Santos",
     phone: "+5521978543210",
     birthday: "1990-06-22T00:00:00.000Z",
-    role: "LUTHER",
+    role: "LUTHIER",
     isActive: true,
     createdAt: "2024-02-15T14:30:22.456Z"
   },
@@ -94,7 +120,7 @@ export const USERS: User[] = [
     lastName: "Almeida",
     phone: "+5531763432109",
     birthday: "1988-11-05T00:00:00.000Z",
-    role: "LUTHER",
+    role: "LUTHIER",
     isActive: true,
     createdAt: "2024-03-20T09:15:45.789Z"
   },

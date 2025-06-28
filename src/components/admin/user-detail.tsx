@@ -10,7 +10,7 @@ interface UserDetailProps {
   lastName: string;
   phone: string;
   birthday: string; // Should be ISO string, not Date object
-  role: "ADMIN" | "USER" | "LUTHER";
+  role: "ADMIN" | "USER" | "LUTHIER";
   isActive: boolean;
   createdAt: string; // Should be ISO string, not Date object
   onEdit?: () => void;
@@ -38,7 +38,7 @@ export function UserDetail({
     lastName: String(lastName || ''),
     phone: String(phone || ''),
     birthday: String(birthday || ''),
-    role: role as "ADMIN" | "USER" | "LUTHER",
+    role: role as "ADMIN" | "USER" | "LUTHIER",
     isActive: Boolean(isActive),
     createdAt: String(createdAt || ''),
   };

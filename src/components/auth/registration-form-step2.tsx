@@ -19,7 +19,7 @@ const additionalInfoSchema = z
       .string()
       .min(8, "Senha deve ter pelo menos 8 caracteres"),
     confirmPassword: z.string(),
-    userType: z.enum(["CLIENT", "LUTHER"]),
+    userType: z.enum(["CLIENT", "LUTHIER"]),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Senhas não conferem",
@@ -137,11 +137,11 @@ export function RegistrationFormStep2({
                   <Button
                     type="button"
                     className={`flex-1 ${
-                      field.value === "LUTHER"
+                      field.value === "LUTHIER"
                         ? "bg-primary text-white"
                         : "bg-card text-foreground"
                     }`}
-                    onClick={() => field.onChange("LUTHER")}
+                    onClick={() => field.onChange("LUTHIER")}
                   >
                     Luthier
                   </Button>
