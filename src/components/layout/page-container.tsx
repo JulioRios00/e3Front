@@ -20,12 +20,7 @@ export function BottomNav({ activeItem = "home" }: BottomNavProps) {
       icon: Guitar,
       id: "services",
     },
-    {
-      name: "Agendamento",
-      href: "/schedule",
-      icon: Calendar,
-      id: "schedule",
-    },
+
     {
       name: "Perfil",
       href: "/profile",
