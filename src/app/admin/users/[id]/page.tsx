@@ -5,8 +5,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
-export default function UserPage({ params }: { params: { id: string } }) {
-  const user = USERS.find((u) => u.id === params.id);
+export default async function UserPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const user = USERS.find((u) => u.id === id);
 
   if (!user) {
     notFound();

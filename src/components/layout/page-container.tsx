@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Link from "next/link";
-import { Home, Guitar, Calendar, User } from "lucide-react";
+import { Home, Guitar, User } from "lucide-react";
 
 interface BottomNavProps {
   activeItem?: "home" | "services" | "schedule" | "profile";

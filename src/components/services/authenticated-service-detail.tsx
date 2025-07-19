@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, Play } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
-interface ServiceDetailProps {
+interface AuthenticatedServiceDetailProps {
   title: string;
   description: string;
   benefits: string[];
@@ -12,22 +13,37 @@ interface ServiceDetailProps {
   videoUrl: string;
 }
 
-export function ServiceDetail({
+export function AuthenticatedServiceDetail({
   title,
   description,
   benefits,
   price,
   videoUrl,
-}: ServiceDetailProps) {
-  const handleScheduleClick = () => {
-    // Redirect to login page when user tries to schedule
-    window.location.href = "/login";
-  };
+}: AuthenticatedServiceDetailProps) {
+  const { user } = useAuth();
   
+  const handleScheduleClick = () => {
+    const phoneNumber = "5511934096737"; // WhatsApp phone number with country code
+    const userName = user ? `${user.firstName} ${user.lastName}` : "Cliente";
+    const serviceName = title;
+    
+    // Create WhatsApp message with user name and service
+    const message = `Olá! Eu sou ${userName} e gostaria de agendar o serviço: ${serviceName}. Poderia me ajudar com o agendamento?`;
+    
+    // Encode the message for URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Create WhatsApp URL
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center">
-        <Link href="/" className="text-white hover:text-gray-300 mr-2">
+        <Link href="/services" className="text-white hover:text-gray-300 mr-2">
           <ChevronLeft className="w-6 h-6" />
         </Link>
         <h1 className="text-2xl font-bold uppercase">{title}</h1>

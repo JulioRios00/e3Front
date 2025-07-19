@@ -9,12 +9,27 @@ import {
 } from "@/components/ui/carousel";
 import { ServiceCard } from "./service-card";
 import { Service } from "@/lib/data";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
 
 interface ServicesCarouselProps {
   services: Service[];
 }
 
 export function ServicesCarousel({ services }: ServicesCarouselProps) {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const handleServiceClick = (serviceId: string) => {
+    if (user) {
+      // User is authenticated, pass authenticated=true
+      router.push(`/services/${serviceId}?authenticated=true`);
+    } else {
+      // User is not authenticated
+      router.push(`/services/${serviceId}`);
+    }
+  };
+
   return (
     <div className="w-full max-w-[1200px] mx-auto px-4">
       <Carousel
@@ -36,6 +51,7 @@ export function ServicesCarousel({ services }: ServicesCarouselProps) {
                   title={service.title}
                   description={service.description}
                   imageUrl={service.imageUrl}
+                  onClick={() => handleServiceClick(service.id)}
                 />
               </div>
             </CarouselItem>

@@ -47,7 +47,7 @@ export function UserDetail({
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString('pt-BR');
-    } catch (error) {
+    } catch {
       return dateString; // Return original string if parsing fails
     }
   };

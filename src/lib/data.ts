@@ -61,31 +61,44 @@ export const SERVICES: Service[] = [
     imageUrl: "/images/service-bridge.jpg",
     videoUrl: "/images/service-bridge.jpg"
   },
-    {
+  {
     id: "4",
-    title: "Regulagem de Trastes",
-    description: "Nivelamento e polimento dos trastes para melhorar a tocabilidade do instrumento. Este processo é essencial para eliminar ruídos e melhorar a ação das cordas.",
+    title: "Setup Completo",
+    description: "Serviço completo de manutenção incluindo regulagem de trastes, ajuste de ponte, troca de cordas e calibragem geral do instrumento.",
     benefits: [
-      "Melhora a tocabilidade",
-      "Som mais limpo",
-      "Maior durabilidade"
+      "Instrumento totalmente calibrado",
+      "Máxima performance",
+      "Garantia de 3 meses"
     ],
-    price: 180.00,
+    price: 350.00,
     imageUrl: "/images/service-frets.jpg",
     videoUrl: "/images/service-frets.jpg"
   },
-    {
+  {
     id: "5",
-    title: "Regulagem de Trastes",
-    description: "Nivelamento e polimento dos trastes para melhorar a tocabilidade do instrumento. Este processo é essencial para eliminar ruídos e melhorar a ação das cordas.",
+    title: "Limpeza e Hidratação",
+    description: "Limpeza profunda do instrumento com produtos especializados e hidratação do braço para manter a madeira em perfeito estado.",
     benefits: [
-      "Melhora a tocabilidade",
-      "Som mais limpo",
-      "Maior durabilidade"
+      "Madeira protegida",
+      "Aparência renovada",
+      "Prevenção de rachaduras"
     ],
-    price: 180.00,
-    imageUrl: "/images/service-frets.jpg",
-    videoUrl: "/images/service-frets.jpg"
+    price: 120.00,
+    imageUrl: "/images/service-strings.jpg",
+    videoUrl: "/images/service-strings.jpg"
+  },
+  {
+    id: "6",
+    title: "Reparo de Eletrônica",
+    description: "Manutenção e reparo de sistemas eletrônicos, captadores, potenciômetros e jacks para instrumentos elétricos e semi-acústicos.",
+    benefits: [
+      "Som sem ruídos",
+      "Captação otimizada",
+      "Eletrônica funcionando perfeitamente"
+    ],
+    price: 200.00,
+    imageUrl: "/images/service-bridge.jpg",
+    videoUrl: "/images/service-bridge.jpg"
   },
 ];
 
