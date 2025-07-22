@@ -44,6 +44,7 @@ export function RegistrationForm() {
     }
 
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { confirmPassword, ...registrationData } = formData;
       await register(registrationData);
       // After successful registration, redirect to services page

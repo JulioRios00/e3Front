@@ -1,9 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Mail, Lock, X } from "lucide-react";
@@ -16,12 +22,12 @@ interface LoginModalProps {
   serviceName?: string;
 }
 
-export function LoginModal({ 
-  isOpen, 
-  onClose, 
-  onLoginSuccess, 
+export function LoginModal({
+  isOpen,
+  onClose,
+  onLoginSuccess,
   redirectTo,
-  serviceName 
+  serviceName,
 }: LoginModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,24 +37,24 @@ export function LoginModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       // Simulate API call
       console.log("Login attempt:", { email, password });
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Store authentication state
       localStorage.setItem("isAuthenticated", "true");
       localStorage.setItem("userEmail", email);
-      
+
       // Call success callback
       if (onLoginSuccess) {
         onLoginSuccess(redirectTo);
       }
-      
+
       // Close modal
       onClose();
-      
+
       // Redirect if specified
       if (redirectTo) {
         window.location.href = redirectTo;
@@ -78,14 +84,21 @@ export function LoginModal({
             <CardHeader className="space-y-1 pb-6 pt-6">
               <div className="text-center mb-4">
                 <h1 className="text-2xl font-bold text-white mb-1">E3 Audio</h1>
-                <p className="text-sm text-gray-400">Sistema de Gestão para Luthiers</p>
+                <p className="text-sm text-gray-400">
+                  Sistema de Gestão para Luthiers
+                </p>
               </div>
               <CardTitle className="text-xl font-bold text-center text-white">
                 Fazer Login
               </CardTitle>
               <CardDescription className="text-center text-gray-400">
                 {serviceName ? (
-                  <>Faça login para entrar em contato sobre <span className="text-white font-medium">"{serviceName}"</span></>
+                  <>
+                    Faça login para entrar em contato sobre{" "}
+                    <span className="text-white font-medium">
+                      &apos;{serviceName}&apos;
+                    </span>
+                  </>
                 ) : (
                   "Digite seu email e senha para acessar sua conta"
                 )}
@@ -95,7 +108,10 @@ export function LoginModal({
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Email Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="modal-email" className="text-white font-medium">
+                  <Label
+                    htmlFor="modal-email"
+                    className="text-white font-medium"
+                  >
                     Email
                   </Label>
                   <div className="relative">
@@ -114,7 +130,10 @@ export function LoginModal({
 
                 {/* Password Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="modal-password" className="text-white font-medium">
+                  <Label
+                    htmlFor="modal-password"
+                    className="text-white font-medium"
+                  >
                     Senha
                   </Label>
                   <div className="relative">
@@ -145,9 +164,9 @@ export function LoginModal({
                 </div>
 
                 {/* Submit Button */}
-                <Button 
-                  type="submit" 
-                  className="w-full bg-white text-black hover:bg-gray-200 font-medium py-2.5 transition-colors duration-200" 
+                <Button
+                  type="submit"
+                  className="w-full bg-white text-black hover:bg-gray-200 font-medium py-2.5 transition-colors duration-200"
                   disabled={isLoading}
                 >
                   {isLoading ? "Entrando..." : "Entrar"}

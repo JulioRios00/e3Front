@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
 export default function AdminPage() {
-  const { isAuthenticated, user, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { 
     users, 
     todaysBirthdays, 

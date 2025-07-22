@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { adminService } from "@/services/admin.service";
 import { User } from "@/lib/api";
 import { useAuth } from "@/hooks/use-auth";
@@ -15,7 +15,7 @@ export function useAdmin() {
 
   const isAdmin = user?.role === "ADMIN";
 
-  const fetchAllUsers = async () => {
+  const fetchAllUsers = useCallback(async () => {
     if (!isAdmin) {
       setError("Access denied: Admin role required");
       return;
@@ -23,40 +23,47 @@ export function useAdmin() {
 
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const usersData = await adminService.getAllUsers();
       setUsers(usersData);
     } catch (error) {
       console.error("Error fetching users:", error);
-      setError(error instanceof Error ? error.message : "Failed to fetch users");
+      setError(
+        error instanceof Error ? error.message : "Failed to fetch users"
+      );
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [isAdmin]);
 
-  const fetchUserById = async (id: string): Promise<User | null> => {
-    if (!isAdmin) {
-      setError("Access denied: Admin role required");
-      return null;
-    }
+  const fetchUserById = useCallback(
+    async (id: string): Promise<User | null> => {
+      if (!isAdmin) {
+        setError("Access denied: Admin role required");
+        return null;
+      }
 
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      const userData = await adminService.getUserById(id);
-      return userData;
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      setError(error instanceof Error ? error.message : "Failed to fetch user");
-      return null;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      setIsLoading(true);
+      setError(null);
 
-  const fetchTodaysBirthdays = async () => {
+      try {
+        const userData = await adminService.getUserById(id);
+        return userData;
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setError(
+          error instanceof Error ? error.message : "Failed to fetch user"
+        );
+        return null;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isAdmin]
+  );
+
+  const fetchTodaysBirthdays = useCallback(async () => {
     if (!isAdmin) {
       setError("Access denied: Admin role required");
       return;
@@ -64,37 +71,46 @@ export function useAdmin() {
 
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const birthdaysData = await adminService.getTodaysBirthdays();
       setTodaysBirthdays(birthdaysData);
     } catch (error) {
       console.error("Error fetching today's birthdays:", error);
-      setError(error instanceof Error ? error.message : "Failed to fetch birthdays");
+      setError(
+        error instanceof Error ? error.message : "Failed to fetch birthdays"
+      );
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [isAdmin]);
 
-  const fetchUpcomingBirthdays = async (days: number = 7) => {
-    if (!isAdmin) {
-      setError("Access denied: Admin role required");
-      return;
-    }
+  const fetchUpcomingBirthdays = useCallback(
+    async (days: number = 7) => {
+      if (!isAdmin) {
+        setError("Access denied: Admin role required");
+        return;
+      }
 
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      const birthdaysData = await adminService.getUpcomingBirthdays(days);
-      setUpcomingBirthdays(birthdaysData);
-    } catch (error) {
-      console.error("Error fetching upcoming birthdays:", error);
-      setError(error instanceof Error ? error.message : "Failed to fetch upcoming birthdays");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const birthdaysData = await adminService.getUpcomingBirthdays(days);
+        setUpcomingBirthdays(birthdaysData);
+      } catch (error) {
+        console.error("Error fetching upcoming birthdays:", error);
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch upcoming birthdays"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isAdmin]
+  );
 
   // Auto-fetch data when admin user is available
   useEffect(() => {
@@ -103,25 +119,25 @@ export function useAdmin() {
       fetchTodaysBirthdays();
       fetchUpcomingBirthdays();
     }
-  }, [isAdmin]);
+  }, [isAdmin, fetchAllUsers, fetchTodaysBirthdays, fetchUpcomingBirthdays]);
 
   return {
     // Data
     users,
     todaysBirthdays,
     upcomingBirthdays,
-    
+
     // State
     isLoading,
     error,
     isAdmin,
-    
+
     // Actions
     fetchAllUsers,
     fetchUserById,
     fetchTodaysBirthdays,
     fetchUpcomingBirthdays,
-    
+
     // Utils
     clearError: () => setError(null),
   };
