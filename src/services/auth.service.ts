@@ -1,4 +1,5 @@
 import { apiClient, LoginRequest, LoginResponse, RegisterRequest, User } from '@/lib/api';
+import { logger } from '@/lib/logger';
 
 export class AuthService {
   /**
@@ -6,17 +7,28 @@ export class AuthService {
    */
   async register(userData: RegisterRequest): Promise<LoginResponse> {
     try {
+      logger.info('AUTH', 'Starting registration', { email: userData.email });
+      logger.debug('AUTH', 'Registration data', userData);
+      
       const response = await apiClient.post<LoginResponse>('/auth/register', userData);
       
       // Store token on successful registration
       if (response.access_token) {
         localStorage.setItem('token', response.access_token);
         localStorage.setItem('user', JSON.stringify(response.user));
+        logger.info('AUTH', 'Registration successful', { email: userData.email, userId: response.user.id });
       }
       
       return response;
     } catch (error) {
-      console.error('Registration error:', error);
+      logger.error('AUTH', 'Registration failed', { email: userData.email, error });
+      
+      // Handle network errors specifically
+      if (error instanceof Error && error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      }
+      
+      // Re-throw API errors with original message
       throw error;
     }
   }
@@ -26,17 +38,26 @@ export class AuthService {
    */
   async login(credentials: LoginRequest): Promise<LoginResponse> {
     try {
+      logger.info('AUTH', 'Starting login', { email: credentials.email });
       const response = await apiClient.post<LoginResponse>('/auth/login', credentials);
       
       // Store token and user data on successful login
       if (response.access_token) {
         localStorage.setItem('token', response.access_token);
         localStorage.setItem('user', JSON.stringify(response.user));
+        logger.info('AUTH', 'Login successful', { email: credentials.email, userId: response.user.id });
       }
       
       return response;
     } catch (error) {
-      console.error('Login error:', error);
+      logger.error('AUTH', 'Login failed', { email: credentials.email, error });
+      
+      // Handle network errors specifically
+      if (error instanceof Error && error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      }
+      
+      // Re-throw API errors with original message
       throw error;
     }
   }

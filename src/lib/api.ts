@@ -1,6 +1,8 @@
 // API Configuration and Base Client
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
+import { logger } from './logger';
+
 // API Response Types
 export interface ApiResponse<T = unknown> {
   data?: T;
@@ -65,26 +67,51 @@ export class ApiClient {
   private async handleResponse<T>(response: Response): Promise<T> {
     const contentType = response.headers.get('content-type');
     
+    logger.debug('API', `${response.status} ${response.url}`, {
+      status: response.status,
+      statusText: response.statusText,
+      url: response.url
+    });
+
+    // Get response text first to handle both success and error cases
+    const responseText = await response.text();
+    logger.debug('API', 'Raw response', responseText);
+
+    let responseData;
+    try {
+      responseData = responseText ? JSON.parse(responseText) : null;
+    } catch (parseError) {
+      logger.error('API', 'Failed to parse JSON response', { responseText, parseError });
+      throw new Error('Server returned invalid response');
+    }
+    
     if (!response.ok) {
       let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
       
-      if (contentType?.includes('application/json')) {
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.message || errorMessage;
-        } catch {
-          // If JSON parsing fails, use the default message
-        }
+      // Handle specific error cases based on status code
+      if (response.status === 409) {
+        // Conflict - email already exists
+        errorMessage = 'Esse email já está registrado.  Por favor tente fazer login.';
+      } else if (response.status === 400) {
+        // Validation error
+        errorMessage = responseData?.message || 'Please check your input data';
+      } else if (responseData?.message) {
+        errorMessage = responseData.message;
       }
+
+      logger.error('API', 'Request failed', {
+        url: response.url,
+        status: response.status,
+        statusText: response.statusText,
+        error: errorMessage,
+        details: responseData
+      });
       
       throw new Error(errorMessage);
     }
 
-    if (contentType?.includes('application/json')) {
-      return response.json();
-    }
-    
-    return response.text() as unknown as T;
+    // Return parsed data for successful responses
+    return responseData as T;
   }
 
   async get<T>(endpoint: string): Promise<T> {
