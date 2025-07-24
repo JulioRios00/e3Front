@@ -65,8 +65,6 @@ export class ApiClient {
   }
 
   private async handleResponse<T>(response: Response): Promise<T> {
-    const contentType = response.headers.get('content-type');
-    
     logger.debug('API', `${response.status} ${response.url}`, {
       status: response.status,
       statusText: response.statusText,

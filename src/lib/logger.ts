@@ -8,7 +8,7 @@ interface LogEntry {
   level: LogLevel;
   message: string;
   timestamp: string;
-  data?: any;
+  data?: unknown;
   context?: string;
 }
 
@@ -26,7 +26,7 @@ class Logger {
     return `${emoji[level]} [${context}] ${message}`;
   }
 
-  private createLogEntry(level: LogLevel, context: string, message: string, data?: any): LogEntry {
+  private createLogEntry(level: LogLevel, context: string, message: string, data?: unknown): LogEntry {
     return {
       level,
       message,
@@ -44,7 +44,7 @@ class Logger {
     return true;
   }
 
-  info(context: string, message: string, data?: any): void {
+  info(context: string, message: string, data?: unknown): void {
     if (!this.shouldLog('info')) return;
     
     const logEntry = this.createLogEntry('info', context, message, data);
@@ -56,7 +56,7 @@ class Logger {
     }
   }
 
-  warn(context: string, message: string, data?: any): void {
+  warn(context: string, message: string, data?: unknown): void {
     if (!this.shouldLog('warn')) return;
     
     const logEntry = this.createLogEntry('warn', context, message, data);
@@ -67,13 +67,13 @@ class Logger {
     }
   }
 
-  error(context: string, message: string, error?: any): void {
+  error(context: string, message: string, error?: unknown): void {
     if (!this.shouldLog('error')) return;
     
     const errorData = {
       message: error instanceof Error ? error.message : error,
       stack: error instanceof Error ? error.stack : undefined,
-      ...(typeof error === 'object' ? error : {})
+      ...(typeof error === 'object' && error !== null ? error : {})
     };
     
     const logEntry = this.createLogEntry('error', context, message, errorData);
@@ -83,10 +83,9 @@ class Logger {
     this.sendToExternalService(logEntry);
   }
 
-  debug(context: string, message: string, data?: any): void {
+  debug(context: string, message: string, data?: unknown): void {
     if (!this.shouldLog('debug')) return;
     
-    const logEntry = this.createLogEntry('debug', context, message, data);
     console.debug(this.formatMessage('debug', context, message), data || '');
   }
 

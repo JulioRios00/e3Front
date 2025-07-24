@@ -10,7 +10,7 @@ export class ApiTestService {
   /**
    * Test API health
    */
-  static async testHealth(): Promise<{ success: boolean; message: string; data?: any }> {
+  static async testHealth(): Promise<{ success: boolean; message: string; data?: unknown }> {
     try {
       logger.info('API_TEST', 'Testing API health...');
       
@@ -74,7 +74,7 @@ export class ApiTestService {
   /**
    * Test registration with sample data
    */
-  static async testRegistration(testEmail?: string): Promise<{ success: boolean; message: string; data?: any }> {
+  static async testRegistration(testEmail?: string): Promise<{ success: boolean; message: string; data?: unknown }> {
     const email = testEmail || `test.${Date.now()}@example.com`;
     const testData = {
       email,
@@ -156,5 +156,5 @@ export class ApiTestService {
 
 // Make it available globally for debugging
 if (typeof window !== 'undefined') {
-  (window as any).ApiTestService = ApiTestService;
+  (window as unknown as { ApiTestService: typeof ApiTestService }).ApiTestService = ApiTestService;
 }
